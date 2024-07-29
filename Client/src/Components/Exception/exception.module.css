@@ -2,7 +2,7 @@
     
 }
 
-.main > .head {
+.head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -10,12 +10,12 @@
     margin-bottom: 10px;
 }
 
-.main > .head > h2 {
+.head > h2 {
     margin: 0;
     color: black;
 }
 
-.main > .head > .time_option {
+.head > .time_option {
     font-size: 15px;
     padding: 5px;
     

@@ -11,7 +11,7 @@ import {
   
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, Filler, Tooltip);
 
-const testValues = [
+export const testValues = [
     [27, 30, 12],
     [28, 50, 35],
     [29, 10, 5],

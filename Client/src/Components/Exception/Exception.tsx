@@ -2,7 +2,7 @@ import style from './exception.module.css';
 
 export default function Exception() {
     return <main className={style.main}>
-        <Head />
+        <Head title='오류 기록' />
 
         {/* Table Head */}
         <section className={style.table_head}>
@@ -22,9 +22,9 @@ export default function Exception() {
     </main>;
 }
 
-function Head() {
+export function Head({ title }: { title: string }) {
     return <section className={style.head}>
-        <h2>오류 기록</h2>
+        <h2>{title}</h2>
         
         <select className={style.time_option}>
             <option value="">이전 24시간</option>
