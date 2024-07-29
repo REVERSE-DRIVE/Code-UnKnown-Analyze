@@ -30,7 +30,7 @@
     box-sizing: border-box;
 
     padding: 25.5px;
-    border-radius: 10px;
+    border-radius: 6px;
     background-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -39,7 +39,7 @@
     text-align: center;
     font-size: 30px;
 
-    margin-bottom: 10px;
+    margin-bottom: 31px;
 }
 
 .main > .box > .input_box {

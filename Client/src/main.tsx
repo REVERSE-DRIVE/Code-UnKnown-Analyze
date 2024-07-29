@@ -5,6 +5,7 @@ import './index.css';
 import { Provider } from 'react-redux';
 import store from './Components/Redux/Store';
 import Login from './Components/Login/Login';
+import Layout from './Components/Layout/Layout';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -12,7 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />}></Route>
-          <Route path='/*' element={<div>메인</div>}></Route>
+          <Route path='/*' element={<Layout />}></Route>
         </Routes>
       </BrowserRouter>
     </Provider>
