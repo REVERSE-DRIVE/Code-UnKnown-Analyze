@@ -4,19 +4,32 @@ import dashboardSvg from './dashboard.svg';
 import userSvg from './user.svg';
 import errorSvg from './error.svg';
 import unitySvg from './unity.svg';
+import { useNavigate } from 'react-router-dom';
 
 const MENUS = [
     ['dashboard', dashboardSvg, '대시보드'],
-    ['users', userSvg, '유저 현황'],
-    ['exception', errorSvg, '오류 기록'],
+    ['user', userSvg, '유저 현황'],
+    ['exceptions', errorSvg, '오류 기록'],
     ['scenes', unitySvg, 'Scene 현황'],
 ]
 
 export default function Sidebar() {
+    const navigate = useNavigate();
+    const goPage = (page: string) => navigate(`/${page}`);
+
     return <aside className={style.main}>
-        {MENUS.map(v => <button key={v[0]} className={style.box}>
-            <img src={v[1]} />
-            {v[2]}
-        </button>)}
+        {MENUS.map(v => {
+            let active = false;
+            if (v[0] === "") {
+                active = new RegExp("^/?$").test(location.pathname);
+            } else {
+                active = new RegExp(`^/${v[0]}/?`).test(location.pathname);
+            }
+        
+            return <button key={v[0]} onClick={() => goPage(v[0])} className={[style.box, (active ? style.active : '')].join(' ')}>
+                <img src={v[1]} />
+                {v[2]}
+            </button>
+        })}
     </aside>;
 }

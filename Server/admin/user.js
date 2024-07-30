@@ -13,6 +13,7 @@ app.get("/admin/user", async function(req, res) {
     const old_YYMMDD = getYYMMDD(now);
 
     const waitRow1 = sql.query("SELECT DAY(time) as day, count(*) as count FROM connects WHERE time >= ? GROUP BY DATE(`time`)", [ YYMMDD ]);
+    const waitRow3 = sql.query("SELECT DAY(created) as day, count(*) as count FROM users WHERE created >= ? GROUP BY DATE(created)", [ YYMMDD ]);
     const waitRow2 = sql.query(`
     SELECT
         total_users,
@@ -24,11 +25,12 @@ app.get("/admin/user", async function(req, res) {
         ) AS counts;
     `, old_YYMMDD);
 
-    const [[rows], [rows2]] = await Promise.all([waitRow1, waitRow2]);
+    const [[rows], [rows2], [rows3]] = await Promise.all([waitRow1, waitRow2, waitRow3]);
     const row2 = rows2[0];
 
     res.send({
         play: rows,
+        new_play: rows3,
         ...row2,
         server_date
     });
