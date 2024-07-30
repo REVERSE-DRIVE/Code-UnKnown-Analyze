@@ -8,7 +8,8 @@
     margin-bottom: 15px;
 }
 
-.main  h2 {
+.main > .chart_box >  h2,
+.main >  h2 {
     font-size: 20px;
     color: black;
     margin: 0;
@@ -34,15 +35,124 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.main > .tb_head > div:nth-child(1) {
+.main > .tb_head > div:nth-child(1),
+.main > .list > .box > div:nth-child(1) {
     width: 3%;
 }
 
-.main > .tb_head > div:nth-child(2) {
+.main > .tb_head > div:nth-child(2),
+.main > .list > .box > div:nth-child(2) {
     width: 50%;
 }
 
-.main > .tb_head > div:nth-child(3) {
+.main > .tb_head > div:nth-child(3),
+.main > .list > .box > div:nth-child(3) {
     text-align: right;
-    width: 47%;
+    width: 23.5%;
+}
+
+.main > .tb_head > div:nth-child(4),
+.main > .list > .box > div:nth-child(4) {
+    text-align: right;
+    width: 23.5%;
+}
+
+.main > .list {
+    width: 100%;
+}
+
+.main > .list > .box {
+    width: 100%;
+    height: 50px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+    
+    display: flex;
+    align-items: center;
+}
+
+.main > .list > .box:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main > .list > .box > div {
+    color: black;
+}
+
+.main > .list > .box > div:nth-child(1) {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+.main > .list > .box > div:nth-child(1) > img {
+    height: 25px;
+}
+
+.main > .list > .box > div:nth-child(2) {
+    font-size: 18px;
+}
+
+.main > .list > .box > div:nth-child(2) > span {
+    font-size: 17px;
+    font-weight: 500;
+    color: rgb(104, 104, 104);
+
+    margin-left: 5px;
+}
+
+.main > .list > .box > div:nth-child(3) > div {
+    float: right;
+}
+
+.main > .list > .detail_box {
+    padding: 10px 0;
+
+    padding-right: 10px;
+    padding-left: 3%;
+    
+    height: 200px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: rgb(216, 227, 235);
+    color: black;
+}
+
+.main > .list > .detail_box > .message {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    flex-grow: 1;
+}
+
+.main > .list > .detail_box > .message > h3 {
+    margin: 0;
+    flex-shrink: 0;
+
+    margin-bottom: 3px;
+}
+
+.main > .list > .detail_box > .message > pre {
+    background-color: rgb(36, 36, 36);
+    color: white;
+
+    box-sizing: border-box;
+
+    font-size: 13px;
+
+    padding: 6px;
+
+    flex-grow: 1;
+    margin: 0;
+
+    overflow: auto;
+}
+
+.main > .list > .detail_box > .count {
+    margin-left: 15px;
 }

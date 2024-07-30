@@ -38,13 +38,13 @@ function Box() {
     return <div className={style.box}>
         <div>System.NullReferenceException</div>
         <div>
-            <Bar value={50} />
+            <ProgressBar value={50} />
         </div>
         <div>10</div>
     </div>;
 }
 
-function Bar({ value }: { value: number }) {
+export function ProgressBar({ value }: { value: number }) {
     return <div className={style.bar_main}>
         <div className={style.bar_in} style={{ width: `${value}%` }}></div>
     </div>
