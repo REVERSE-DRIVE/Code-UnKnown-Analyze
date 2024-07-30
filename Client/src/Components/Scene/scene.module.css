@@ -1,0 +1,100 @@
+.main {
+    color: black;
+}
+
+.main > h1 {
+    margin: 0;
+    margin-bottom: 5px;
+
+    font-size: 30px;
+}
+
+.main > h2 {
+    margin: 0;
+    /* margin-bottom: 5px; */
+    font-size: 20px;
+
+    font-weight: 500;
+}
+
+.main > h2 > span {
+    font-weight: 600;
+}
+
+.main > h2.many > span {
+    color: rgb(114, 180, 224);
+}
+.main > h2.low > span {
+    color: rgb(224, 114, 114);
+}
+
+.main > .scene_list {
+    margin-top: 10px;
+}
+
+.main > .scene_list > .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+
+    font-size: 20px;
+    font-weight: 600;
+
+    /* padding-bottom: 5px; */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.main > .scene_list > .head > select {
+    padding: 3px 6px;
+
+    background-color: transparent;
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    
+    font-size: 15px;
+
+    margin-bottom: 5px;
+
+    outline: none;
+}
+
+.main > .scene_list > .box {
+    width: 100%;
+    height: 40px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+    
+    display: flex;
+    align-items: center;
+}
+
+.main > .scene_list > .box:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main > .scene_list > .box > div:nth-child(1) {
+    width: 50%;
+}
+
+.main > .scene_list > .box > div:nth-child(2),
+.main > .scene_list > .box > div:nth-child(3) {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.main > .scene_list > .box > div:nth-child(2) {
+    width: 25%;
+}
+
+.main > .scene_list > .box > div:nth-child(3) {
+    width: 25%;
+    
+    font-size: 13px;
+}
+
+.main > .scene_list > .box > div:nth-child(3) > div {
+    margin-right: 10px;
+    width: 130px;
+}
