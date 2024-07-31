@@ -12,9 +12,11 @@ app.get("/admin/user", async function(req, res) {
 
     const old_YYMMDD = getYYMMDD(now);
 
-    const waitRow1 = sql.query("SELECT DAY(time) as day, count(*) as count FROM connects WHERE time >= ? GROUP BY DATE(`time`)", [ YYMMDD ]);
-    const waitRow3 = sql.query("SELECT DAY(created) as day, count(*) as count FROM users WHERE created >= ? GROUP BY DATE(created)", [ YYMMDD ]);
-    const waitRow2 = sql.query(`
+    const connection = await sql.getConnection();
+
+    const waitRow1 = connection.query("SELECT DAY(time) as day, count(*) as count FROM connects WHERE time >= ? GROUP BY DATE(`time`)", [ YYMMDD ]);
+    const waitRow3 = connection.query("SELECT DAY(created) as day, count(*) as count FROM users WHERE created >= ? GROUP BY DATE(created)", [ YYMMDD ]);
+    const waitRow2 = connection.query(`
     SELECT
         total_users,
         total_users - GREATEST(recent_users, 0) AS inactive_users
@@ -27,6 +29,8 @@ app.get("/admin/user", async function(req, res) {
 
     const [[rows], [rows2], [rows3]] = await Promise.all([waitRow1, waitRow2, waitRow3]);
     const row2 = rows2[0];
+
+    connection.release();
 
     res.send({
         play: rows,

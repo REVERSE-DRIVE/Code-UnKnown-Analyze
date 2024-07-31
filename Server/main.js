@@ -5,5 +5,6 @@ const app = global.app = express();
 app.use(express.json());
 
 require("./admin/user.js");
+require("./game/user.js");
 
 app.listen(config.port, () => console.log(`[API] server listen ${config.port}`));
