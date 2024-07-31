@@ -1,16 +1,17 @@
 const sql = require("../lib/sql");
+const dateUtil = require("../lib/date");
 
 app.get("/admin/user", async function(req, res) {
     const now = new Date();
     const server_date = now.getDate();
 
     now.setDate(1);
-    const YYMMDD = getYYMMDD(now);
+    const YYMMDD = dateUtil.getYYMMDD(now);
 
     const old_date = new Date();
     old_date.setMonth((old_date.getMonth - 1 /* 1개월 뺌 */) % 12);
 
-    const old_YYMMDD = getYYMMDD(now);
+    const old_YYMMDD = dateUtil.getYYMMDD(now);
 
     const connection = await sql.getConnection();
 
@@ -39,7 +40,3 @@ app.get("/admin/user", async function(req, res) {
         server_date
     });
 });
-
-function getYYMMDD(date) {
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-}
