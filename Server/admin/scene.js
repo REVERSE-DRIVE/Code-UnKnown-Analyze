@@ -11,6 +11,7 @@ app.get("/admin/scene", async function(req, res) {
     const waitHandler2 = connection.query("SELECT scene, count(*) as count, AVG(time) as `avg` FROM scenes GROUP BY scene");
 
     const [[[ { total } ]], [rows]] = await Promise.all([waitHandler, waitHandler2]);
+    connection.release();
 
     rows.forEach(v => result[v.scene] = { count: v.count, avg: v.avg });
 
