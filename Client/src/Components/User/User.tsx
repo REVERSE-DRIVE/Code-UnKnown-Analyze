@@ -179,7 +179,7 @@ function KeepUserBox({ total_data }: { total_data: KeepUserData }) {
         datasets: [
             {
                 // label: "최근 접속",
-                data: [total_data.total, total_data.inactive_total],
+                data: [total_data.total - total_data.inactive_total, total_data.inactive_total],
                 // borderColor: "rgb(255, 99, 132)",
                 backgroundColor: [
                     "rgba(54, 162, 235, 0.6)",

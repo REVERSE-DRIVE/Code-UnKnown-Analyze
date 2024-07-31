@@ -9,9 +9,9 @@ app.get("/admin/user", async function(req, res) {
     const YYMMDD = dateUtil.getYYMMDD(now);
 
     const old_date = new Date();
-    old_date.setMonth((old_date.getMonth - 1 /* 1개월 뺌 */) % 12);
+    old_date.setMonth((old_date.getMonth() - 1 /* 1개월 뺌 */) % 12);
 
-    const old_YYMMDD = dateUtil.getYYMMDD(now);
+    const old_YYMMDD = dateUtil.getYYMMDD(old_date);
 
     const connection = await sql.getConnection();
 
