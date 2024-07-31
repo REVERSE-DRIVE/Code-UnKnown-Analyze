@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `connects` (
 CREATE TABLE IF NOT EXISTS `scenes` (
   `UUID` varchar(50) NOT NULL,
   `scene` varchar(50) NOT NULL,
-  `time` time NOT NULL,
+  `time` int NOT NULL,
   PRIMARY KEY (`UUID`,`scene`),
   CONSTRAINT `FK_scenes_users` FOREIGN KEY (`UUID`) REFERENCES `users` (`UUID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

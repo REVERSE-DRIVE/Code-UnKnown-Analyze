@@ -26,5 +26,6 @@ app.use(function(req, res, next) {
 
 require("./admin/user.js");
 require("./game/user.js");
+require("./game/scene.js");
 
 app.listen(config.port, () => console.log(`[API] server listen ${config.port}`));
