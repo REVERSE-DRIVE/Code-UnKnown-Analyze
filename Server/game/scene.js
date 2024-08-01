@@ -31,7 +31,7 @@ app.post("/game/scene", async function(req, res) {
         let error = [500, "DB ERROR"];
         
         if (result.code === "ER_DUP_ENTRY") {
-            error = [403, "이미 등록되었습니다."];
+            error = [200, "이미 등록되었습니다."];
         }
         return res.status(error[0]).send(error[1]);;
     }
