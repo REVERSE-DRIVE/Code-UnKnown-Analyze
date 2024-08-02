@@ -1,8 +1,40 @@
+import { useEffect, useMemo, useState } from 'react';
 import style from './exception.module.css';
+import { request } from '../Util/request';
+import { useNavigate } from 'react-router-dom';
+import { numberComma } from '../Util/misc';
+
+interface exceptionData {
+    type: string,
+    count: number
+}
 
 export default function Exception() {
+    const [ option, setOption ] = useState(0);
+    const [ list, setList ] = useState<exceptionData[]>([]);
+    const total = useMemo(() => list.length === 0 ? 0 : list.map(v => Number(v.count)).reduce((a, v) => a + v), [ list ]);
+
+    const loadData = async function() {
+        const { code, data }: { code: number, data: exceptionData[] } = await request(`exception?time=${option}`);
+        if (code !== 200) return;
+
+        data.map(v => ({ type: v.type, count: Number(v.count) }));
+        data.sort((a, b) => {
+            if (a.count < b.count)
+                return -1;
+            else if (a.count > b.count)
+                return 1;
+            else return 0;
+        });
+        setList(data);
+    }
+
+    useEffect(() => {
+        loadData();
+    }, [ option ]);
+
     return <main className={style.main}>
-        <Head title='오류 기록' />
+        <Head title='오류 기록' setState={setOption} />
 
         {/* Table Head */}
         <section className={style.table_head}>
@@ -13,34 +45,32 @@ export default function Exception() {
 
         {/* List */}
         <section className={style.list}>
-            <Box />
-            <Box />
-            <Box />
-            <Box />
-            <Box />
+            {list.map(v => <Box key={v.type} data={v} total={total} />)}
         </section>
     </main>;
 }
 
-export function Head({ title }: { title: string }) {
+export function Head({ title, setState }: { title: string, setState: React.Dispatch<React.SetStateAction<number>> }) {
     return <section className={style.head}>
         <h2>{title}</h2>
         
-        <select className={style.time_option}>
-            <option value="">이전 24시간</option>
-            <option value="">이전 7일</option>
-            <option value="">이전 30일</option>
+        <select onChange={e => setState(Number(e.target.value))} className={style.time_option}>
+            <option value="0">이전 24시간</option>
+            <option value="1">이전 7일</option>
+            <option value="2">이전 30일</option>
         </select>
     </section>;
 }
 
-function Box() {
-    return <div className={style.box}>
-        <div>System.NullReferenceException</div>
+function Box({ data, total }: { data: exceptionData, total: number }) {
+    const navigate = useNavigate();
+
+    return <div onClick={() => navigate(`/exceptions/${data.type}`)} className={style.box}>
+        <div>{data.type}</div>
         <div>
-            <ProgressBar value={50} />
+            <ProgressBar value={(data.count / total) * 100} />
         </div>
-        <div>10</div>
+        <div>{numberComma(data.count)}</div>
     </div>;
 }
 

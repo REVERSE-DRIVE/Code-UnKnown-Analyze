@@ -5,6 +5,7 @@ import { Chart as ChartJS,  ChartData, CategoryScale, LinearScale, PointElement,
 import { testValues } from '../User/User';
 
 import arrowSvg from './right_arrow.svg';
+import { useState } from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, Filler, Tooltip);
 

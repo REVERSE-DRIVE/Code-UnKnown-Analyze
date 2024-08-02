@@ -11,7 +11,7 @@ app.get("/admin/exception", async function(req, res) {
     }
 
 
-    const [rows] = await sql.query("SELECT type, count(*) AS count FROM exceptions WHERE time >= ? GROUP BY type", [ YYMMDD ]);
+    const [rows] = await sql.query("SELECT type, SUM(count) AS count FROM exceptions WHERE time >= ? GROUP BY type", [ YYMMDD ]);
     res.send(rows);
 });
 
