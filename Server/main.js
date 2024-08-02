@@ -28,5 +28,6 @@ require("./admin/user.js");
 require("./game/user.js");
 require("./admin/scene.js");
 require("./game/scene.js");
+require("./game/exception.js");
 
 app.listen(config.port, () => console.log(`[API] server listen ${config.port}`));
