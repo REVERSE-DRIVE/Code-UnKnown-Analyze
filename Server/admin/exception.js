@@ -58,20 +58,22 @@ function getYYMMDD_time(id) {
     let lastTime;
     switch (id) {
         case 0:
-            lastTime = 60 * 60 * 24;
+            lastTime = 1;
             break;
         case 1:
-            lastTime = 60 * 60 * 24 * 7;
+            lastTime = 7;
             break;
         case 2:
-            lastTime = 60 * 60 * 24 * 30;
+            lastTime = 30;
             break;
     
         default:
             return null;
     }
 
-    const date = new Date(new Date().getTime() - lastTime * 1000);
+    const date = new Date();
+    date.setDate(date.getDate() - lastTime);
+        
     const YYMMDD = dateUtil.getYYMMDD(date);
 
     return YYMMDD;

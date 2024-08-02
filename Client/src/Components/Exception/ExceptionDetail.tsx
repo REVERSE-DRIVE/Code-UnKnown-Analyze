@@ -22,7 +22,7 @@ export default function ExceptionDetail() {
     return <main className={style.main}>
         <Head title={`오류 타입: ${errorType}`} setState={setOption} />
     
-        <ChartBox />
+        <ChartBox type={errorType} />
 
         <h2>상세 정보</h2>
         <TableHead />
@@ -31,13 +31,22 @@ export default function ExceptionDetail() {
     </main>;
 }
 
-function ChartBox() {
+type chartData = {
+    count: number,
+    time: string
+}
+
+type saveChartData = { count: number, displayName: string }
+
+function ChartBox({ type }: { type: string }) {
+    const [ counts, setCounts ] = useState<saveChartData[]>([]);
+
     const data: ChartData = {
-        labels: testValues.map(v => v[0] + "일"),
+        labels: counts.map(v => v.displayName),
         datasets: [
             {
                 // label: "최근 접속",
-                data: testValues.map(v => v[1]),
+                data: counts.map(v => v.count),
                 // borderColor: "rgb(255, 99, 132)",
                 backgroundColor: "rgba(54, 162, 235, 0.6)",
             }
@@ -57,6 +66,36 @@ function ChartBox() {
         responsive: true,
         maintainAspectRatio: false,
     }
+
+    const loadData = async function() {
+        const { code, data: _data } = await request(`exception/${type}/chart`);
+        const data = _data as chartData[];
+
+        if (code !== 200) return;
+
+        const indexing: { [key: string]: number } = {};
+        data.forEach(e => {
+            const time = new Date(e.time);
+            indexing[`${time.getFullYear()}${time.getMonth()}${time.getDate()}`] = Number(e.count);
+        });
+        
+        const date = new Date();
+        const result: saveChartData[] = [];
+        for (let i = 0; i <= 30; i++) {
+            result.push({
+                displayName: `${date.getMonth() + 1}월 ${date.getDate()}일`,
+                count: indexing[`${date.getFullYear()}${date.getMonth()}${date.getDate()}`] || 0
+            });
+            date.setDate(date.getDate() - 1);
+        }
+
+        result.reverse();
+        setCounts(result);
+    }
+
+    useEffect(() => {
+        loadData();
+    }, [type]);
 
     return <section className={style.chart_box}>
         <h2>개요</h2>
