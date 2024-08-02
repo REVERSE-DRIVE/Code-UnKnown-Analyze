@@ -4,7 +4,7 @@ export interface ResponseApi {
 }
 
 export async function request(path: string, option: RequestInit = {}): Promise<ResponseApi> {
-    const response = await fetch(`/api/admin/${path}`, Object.assign(option, { credentials: "same-origin" }));
+    const response = await fetch(`/code_unknown/api/admin/${path}`, Object.assign(option, { credentials: "same-origin" }));
 
     let result: any;
     try {

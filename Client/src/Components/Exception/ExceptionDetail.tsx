@@ -1,11 +1,10 @@
 import style from './exception_detail.module.css';
 import { Head, ProgressBar } from './Exception';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS,  ChartData, CategoryScale, LinearScale, PointElement, Filler, Tooltip, BarElement } from 'chart.js';
-import { testValues } from '../User/User';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, Filler, Tooltip, BarElement } from 'chart.js';
 
 import arrowSvg from './right_arrow.svg';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { request } from '../Util/request';
 import { numberComma } from '../Util/misc';
@@ -41,7 +40,7 @@ type saveChartData = { count: number, displayName: string }
 function ChartBox({ type }: { type: string }) {
     const [ counts, setCounts ] = useState<saveChartData[]>([]);
 
-    const data: ChartData = {
+    const data = {
         labels: counts.map(v => v.displayName),
         datasets: [
             {

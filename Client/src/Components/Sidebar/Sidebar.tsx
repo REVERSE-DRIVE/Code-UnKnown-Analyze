@@ -15,7 +15,7 @@ const MENUS = [
 
 export default function Sidebar() {
     const navigate = useNavigate();
-    const goPage = (page: string) => navigate(`/${page}`);
+    const goPage = (page: string) => navigate(`/code_unknown/admin/${page}`);
 
     return <aside className={style.main}>
         {MENUS.map(v => {

@@ -1,6 +1,6 @@
 import { Line, Pie } from 'react-chartjs-2';
 import style from './user.module.css';
-import { ArcElement, ChartData, Filler, ScriptableContext, Tooltip } from 'chart.js';
+import { ArcElement, Filler, Tooltip } from 'chart.js';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -105,7 +105,7 @@ export default function User() {
 }
 
 function PlayUserBox({ users }: { users: PlayUserData[] }) {
-    const data: ChartData = {
+    const data = {
         labels: users.map(v => `${v.date}일`),
         datasets: [
             {
@@ -174,7 +174,7 @@ function PlayUserBox({ users }: { users: PlayUserData[] }) {
 }
 
 function KeepUserBox({ total_data }: { total_data: KeepUserData }) {
-    const data: ChartData = {
+    const data = {
         labels: ["최근 접속", "장시간 미접속"],
         datasets: [
             {

@@ -65,7 +65,7 @@ export function Head({ title, setState }: { title: string, setState: React.Dispa
 function Box({ data, total }: { data: exceptionData, total: number }) {
     const navigate = useNavigate();
 
-    return <div onClick={() => navigate(`/exceptions/${data.type}`)} className={style.box}>
+    return <div onClick={() => navigate(`/code_unknown/admin/exceptions/${data.type}`)} className={style.box}>
         <div>{data.type}</div>
         <div>
             <ProgressBar value={(data.count / total) * 100} />

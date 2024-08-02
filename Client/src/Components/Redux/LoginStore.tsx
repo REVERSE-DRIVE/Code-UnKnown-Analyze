@@ -1,4 +1,4 @@
-import { UnknownAction } from "redux";
+// import { UnknownAction } from "redux";
 
 export interface LoginStore {
     logined: boolean,
@@ -12,6 +12,6 @@ const defaultValue: LoginStore = {
     name: 'unknown'
 }
 
-export default function storeHandler(store = defaultValue, action: UnknownAction) :LoginStore {
+export default function storeHandler(store = defaultValue/*, action: UnknownAction*/) :LoginStore {
     return store;
 }
