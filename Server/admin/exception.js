@@ -20,6 +20,11 @@ app.get("/admin/exception/:type", async function(req, res) {
 
     const timeId = Number(req.query.time);
     const YYMMDD = getYYMMDD_time(timeId);
+
+    if (YYMMDD === null) {
+        res.sendStatus(400);
+        return;
+    }
     
     const [rows] = await sql.query("SELECT func, sum(count) as count FROM exceptions WHERE time >= ? AND type = ? GROUP BY func", [ YYMMDD, type ]);
     res.send(rows);
@@ -30,6 +35,11 @@ app.get("/admin/exception/:type/:func/messages", async function(req, res) {
 
     const timeId = Number(req.query.time);
     const YYMMDD = getYYMMDD_time(timeId);
+
+    if (YYMMDD === null) {
+        res.sendStatus(400);
+        return;
+    }
     
     const [rows] = await sql.query("SELECT message, count FROM exceptions WHERE time >= ? AND type = ? AND func = ? ORDER BY count DESC", [ YYMMDD, type, func ]);
     res.send(rows);

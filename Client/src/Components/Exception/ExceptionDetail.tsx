@@ -5,20 +5,29 @@ import { Chart as ChartJS,  ChartData, CategoryScale, LinearScale, PointElement,
 import { testValues } from '../User/User';
 
 import arrowSvg from './right_arrow.svg';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { request } from '../Util/request';
+import { numberComma } from '../Util/misc';
+import React from 'react';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, BarElement, Filler, Tooltip);
 
 export default function ExceptionDetail() {
+    const { type: errorType } = useParams();
+    const [ option, setOption ] = useState(0);
+
+    if (errorType === undefined) return;
+
     return <main className={style.main}>
-        <Head title='오류 타입: System.NullReferenceException' />
+        <Head title={`오류 타입: ${errorType}`} setState={setOption} />
     
         <ChartBox />
 
         <h2>상세 정보</h2>
         <TableHead />
 
-        <TableContent />
+        <TableContent type={errorType} option={option} />
     </main>;
 }
 
@@ -67,39 +76,99 @@ function TableHead() {
     </section>
 }
 
-function TableContent() {
+type exceptionFunction = {
+    func: string,
+    count: number
+}
+
+type exceptionMessage = {
+    message: string,
+    count: number,
+}
+
+type messageStateType = { [key: string]: { hide: boolean, content: exceptionMessage[] } | null | undefined };
+
+function TableContent({ type, option }: { type: string, option: number }) {
+    const [ list, setList ] = useState<exceptionFunction[]>([]);
+    const [ messages, setMessages ] = useState<messageStateType>({});
+    // const statusRef = useRef<{ [key: string]: boolean }>({});
+
+    const total = useMemo(() => list.length > 0 ? list.map(v => v.count).reduce((prev, v) => prev + v) : 0, [ list ]);
+
+    const loadList = async function() {
+        const { code, data: _data } = await request(`exception/${type}?time=${option}`);
+        let data = _data as exceptionFunction[];
+
+        if (code !== 200) return;
+
+        data = data.map(v => ({ func: v.func, count: Number(v.count) }));
+        data.sort(function(a, b) {
+            if (a.count < b.count) return 1;
+            else if (a.count > b.count) return -1;
+            return 0;
+        });
+
+        setList(data);
+    }
+
+    const loadMessage = async function(name: string) {
+        const data = messages[name];
+        if (data === null) return; // 로딩중이라 머 못함
+        
+        if (data !== undefined) {
+            data.hide = !data.hide;
+            setMessages({ ...messages });
+            return;
+        }
+
+        setMessages({ ...messages, [name]: null });
+
+        const { code, data: result } = await request(`exception/${type}/${name}/messages?time=${option}`);
+        if (code !== 200) return;
+        
+        setMessages((prev: messageStateType) => ({ ...prev, [name]: {
+            hide: false,
+            content: result
+        } }));
+    }
+
+
+    useEffect(() => {
+        setList([]);
+        setMessages({});
+        // statusRef.current = {};
+
+        loadList();
+    }, [ type, option ]);
+
     return <section className={style.list}>
-        <Box />
-        <DetailBox />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
-        <Box />
+        {list.map(v => {
+            const open = messages[v.func] === null || messages[v.func]?.hide === false;
+
+            return <React.Fragment key={v.func}>
+                <Box onToggle={() => loadMessage(v.func)} toggle={open} data={v} total={total} />
+                {open && messages[v.func]?.content.map(v => <DetailBox key={v.message} data={v} />)}
+            </React.Fragment>;
+        })}
     </section>;
 }
 
-function Box() {
-    return <div className={style.box}>
-        <div><img src={arrowSvg} /></div>
-        <div>domiTest.Update()</div>
-        <div><ProgressBar value={30} /></div>
-        <div>1000</div>
+function Box({ data, total, toggle, onToggle }: { data: exceptionFunction, total: number, toggle: boolean, onToggle: () => void }) {
+    return <div onClick={onToggle} className={style.box}>
+        <div><img style={toggle ? {transform: 'rotate(90deg)'} : {}} src={arrowSvg} /></div>
+        <div>{data.func}</div>
+        <div><ProgressBar value={(data.count / total) * 100} /></div>
+        <div>{numberComma(data.count)}</div>
     </div>;
 }
 
-function DetailBox() {
+function DetailBox({data}: {data: exceptionMessage}) {
     return <div className={style.detail_box}>
         <div className={style.message}>
             <h3>메세지</h3>
-            <pre>{`asdadasdsa
-                asdasdsadas
-                asdasdsadasdsac
-                asdasdsadasdsac
-                asdasdsadasdsac
-            `}</pre>
+            <pre>{data.message}</pre>
         </div>
 
-        <div className={style.count}>1000</div>
+        <div className={style.count}>{numberComma(data.count)}</div>
     </div>
 }
