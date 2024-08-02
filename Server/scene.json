@@ -1,5 +1,20 @@
 [
     "domiMAP",
     "main",
-    "test"
+    "test",
+    "EmptyScene 1",
+    "EmptyScene 2",
+    "GameScene",
+    "IntroScene",
+    "ShaderTest",
+    "SampleScene",
+    "Player Scene",
+    "MainLobbyScene",
+    "GameScene 1",
+    "JoyStickTest",
+    "GameScene_Leo",
+    "EnemyTestScene",
+    "test1",
+    "test2",
+    "ReporterScene"
 ]
