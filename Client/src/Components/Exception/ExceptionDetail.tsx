@@ -60,7 +60,7 @@ function ChartBox() {
 function TableHead() {
     return <section className={style.tb_head}>
         <div></div>
-        <div>스크립트 / Line</div>
+        <div>함수 / Line</div>
         <div>비중</div>
         <div>횟수</div>
     </section>
@@ -81,7 +81,7 @@ function TableContent() {
 function Box() {
     return <div className={style.box}>
         <div><img src={arrowSvg} /></div>
-        <div>DomiScript.cs<span>:15</span></div>
+        <div>domiTest.Update()</div>
         <div><ProgressBar value={30} /></div>
         <div>1000</div>
     </div>;
