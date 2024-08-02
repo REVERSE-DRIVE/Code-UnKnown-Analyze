@@ -1,7 +1,7 @@
 const sql = require("../lib/sql");
 const dateUtil = require("../lib/date");
 
-app.post("/game/excpetion", async function(req, res) {
+app.post("/game/exception", async function(req, res) {
     const body = req.body;
     
     if (!(body instanceof Array)) {
