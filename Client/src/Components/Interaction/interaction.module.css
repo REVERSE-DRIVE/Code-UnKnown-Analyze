@@ -1,3 +1,34 @@
-.main {
+.main > .row {
+    height: 350px;
+
+    display: flex;
+}
+
+.main > .row > .line {
+    width: 1px;
+    height: 100%;
+
+    margin: 0 10px;
     
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.main > .row > .box {
+    flex-grow: 1;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.main > .row > .box > h2 {
+    color: black;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.main > .row > .box > .list {
+    flex-grow: 1;
+    overflow: auto;
+
+    border: 1px solid red;
 }
