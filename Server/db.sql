@@ -53,6 +53,37 @@ CREATE TABLE IF NOT EXISTS `exceptions` (
 	INDEX `인덱스 1` (`type`)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `time_token` (
+	`UUID` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`token` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`create` DATETIME NOT NULL,
+	PRIMARY KEY (`UUID`, `token`) USING BTREE,
+	CONSTRAINT `FK_time_token_users` FOREIGN KEY (`UUID`) REFERENCES `code_analyze`.`users` (`UUID`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `time_scene` (
+	`UUID` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`scene` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`time` INT(11) NOT NULL,
+	`created` DATETIME NOT NULL,
+	INDEX `FK_time_scene_users` (`UUID`) USING BTREE,
+	CONSTRAINT `FK_time_scene_users` FOREIGN KEY (`UUID`) REFERENCES `code_analyze`.`users` (`UUID`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `time_game` (
+	`UUID` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`time` INT(11) NOT NULL DEFAULT '0',
+	`created` DATE NOT NULL DEFAULT '0000-00-00',
+	INDEX `FK_time_game_users` (`UUID`) USING BTREE,
+	CONSTRAINT `FK_time_game_users` FOREIGN KEY (`UUID`) REFERENCES `code_analyze`.`users` (`UUID`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

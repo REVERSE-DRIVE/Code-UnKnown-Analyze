@@ -14,6 +14,7 @@ const MENUS = [
     ['scenes', unitySvg, 'Scene 현황'],
     ['playtime', timeSvg, '플레이 타임'],
     ['interaction', timeSvg, '상호 작용'],
+    ['platform', timeSvg, '플랫폼 현황'],
 ]
 
 export default function Sidebar() {
