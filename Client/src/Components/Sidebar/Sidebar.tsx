@@ -13,6 +13,7 @@ const MENUS = [
     ['exceptions', errorSvg, '오류 기록'],
     ['scenes', unitySvg, 'Scene 현황'],
     ['playtime', timeSvg, '플레이 타임'],
+    ['interaction', timeSvg, '상호 작용'],
 ]
 
 export default function Sidebar() {
