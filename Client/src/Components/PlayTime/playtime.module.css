@@ -1,0 +1,104 @@
+.main > .title {
+    margin: 0;
+    margin-bottom: 3px;
+
+    font-size: 30px;
+    color: black;
+}
+
+.main > .sub_title {
+    color: black;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.main > .sub_title > span {
+    font-weight: 600;
+    color: rgb(111, 192, 87);
+}
+
+.main > .gameplay_box {
+    margin-top: 10px;
+    height: 200px;
+}
+
+.main > .scenetime_chart {
+    margin-top: 10px;
+    height: 500px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.main > .scenetime_chart > h2 {
+    margin: 0;
+
+    color: black;
+}
+
+.main > .scenetime_chart > .chart_container {
+    flex-grow: 1;
+    height: 0;
+}
+
+.main > .scenetime_list {
+    
+}
+
+.main > .scenetime_list > .header {
+    width: 100%;
+
+    display: flex;
+
+    align-items: start;
+    justify-content: space-between;
+    
+    color: black;
+    
+    margin-top: 10px;
+}
+
+.main > .scenetime_list > .header > h2 {
+    margin: 0;
+}
+
+.main > .scenetime_list > .table_head {
+    width: 100%;
+    color: rgb(139, 139, 139);
+
+    margin-top: 8px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    display: flex;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.main > .scenetime_list > .table_head > div:nth-child(1),
+.main > .scenetime_list > .box > div:nth-child(1) {
+    width: 80%;
+}
+.main > .scenetime_list > .table_head > div:nth-child(2),
+.main > .scenetime_list > .box > div:nth-child(2) {
+    width: 20%;
+    text-align: right;
+}
+
+.main > .scenetime_list > .box {
+    width: 100%;
+    height: 50px;
+    
+    padding: 0 10px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+
+    color: black;
+}
+
+.main > .scenetime_list > .box:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
