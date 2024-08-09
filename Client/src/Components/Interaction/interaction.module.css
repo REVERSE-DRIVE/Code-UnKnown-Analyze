@@ -1,5 +1,6 @@
 .main > .row {
     height: 350px;
+    margin-bottom: 10px;
 
     display: flex;
 }
@@ -84,4 +85,14 @@
 
 .main > .row > .box > .list > .box:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main > .row > .empty_count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main > .row > .empty_count > span {
+    color: gray;
 }

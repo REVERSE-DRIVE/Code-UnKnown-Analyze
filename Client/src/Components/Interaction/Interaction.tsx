@@ -11,6 +11,15 @@ export default function InteractionPage() {
             
             <SkillCountBox />
         </section>
+
+        {/* 카드 업글 얼마나 골랐는지 */}
+        <section className={style.row}>
+            <CardCountBox />
+
+            <div className={style.line}></div>
+            
+            <EmptyBox />
+        </section>
     </main>;
 }
 
@@ -69,3 +78,19 @@ function SkillCountBox() {
     </section>;
 }
 
+function CardCountBox() {
+    return <section className={[style.box, style.card_count].join(' ')}>
+        <div className={style.head}>
+            <h2>카드 사용 현황</h2>
+            <TimeSelect />
+        </div>
+
+
+    </section>;
+}
+
+function EmptyBox() {
+    return <section className={[style.box, style.empty_count].join(' ')}>
+        <span>나중에 뭐 넣을지 추천좀</span>
+    </section>;
+}
