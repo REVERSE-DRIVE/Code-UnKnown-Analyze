@@ -20,15 +20,68 @@
     flex-direction: column;
 }
 
-.main > .row > .box > h2 {
+.main > .row > .box > .head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+}
+
+.main > .row > .box > .head > h2 {
     color: black;
     margin: 0;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
+}
+
+.main > .row > .box > .table_head {
+    color: rgb(104, 104, 104);
+    font-size: 13px;
+    font-weight: 500;
+
+    display: flex;
 }
 
 .main > .row > .box > .list {
     flex-grow: 1;
     overflow: auto;
 
-    border: 1px solid red;
+    /* border: 1px solid red; */
+}
+
+.main > .row > .box > .table_head > div:nth-child(1),
+.main > .row > .box > .list > .box > div:nth-child(1) {
+    width: 40%;
+}
+.main > .row > .box > .table_head > div:nth-child(2),
+.main > .row > .box > .list > .box > div:nth-child(2) {
+    width: 30%;
+}
+.main > .row > .box > .table_head > div:nth-child(3),
+.main > .row > .box > .list > .box > div:nth-child(3) {
+    width: 30%;
+}
+
+.main > .row > .box > .list > .box > div:nth-child(2),
+.main > .row > .box > .list > .box > div:nth-child(3) {
+    font-size: 13px;
+}
+
+.main > .row > .box > .list > .box > div > .bar {
+    width: calc(100% - 20px);
+    height: 10px;
+}
+
+.main > .row > .box > .list > .box {
+    display: flex;
+    align-items: center;
+    
+    color: black;
+    
+    height: 40px;
+
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.main > .row > .box > .list > .box:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.05);
 }

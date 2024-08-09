@@ -74,8 +74,10 @@ function Box({ data, total }: { data: exceptionData, total: number }) {
     </div>;
 }
 
-export function ProgressBar({ value }: { value: number }) {
-    return <div className={style.bar_main}>
+export function ProgressBar({ value, className = [] }: { value: number, className?: string[] }) {
+    className.push(style.bar_main);
+
+    return <div className={className.join(' ')}>
         <div className={style.bar_in} style={{ width: `${value}%` }}></div>
     </div>
 }

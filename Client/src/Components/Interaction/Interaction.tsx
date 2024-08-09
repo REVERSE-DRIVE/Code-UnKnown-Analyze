@@ -1,3 +1,5 @@
+import { ProgressBar } from '../Exception/Exception';
+import { TimeSelect } from '../Recycle/TimeSelect';
 import style from './interaction.module.css';
 
 export default function InteractionPage() {
@@ -13,20 +15,55 @@ export default function InteractionPage() {
 }
 
 function ButtonCountBox() {
-    return <section className={style.box}>
-        <h2>버튼 사용 현황</h2>
+    return <section className={[style.box, style.btn_count].join(' ')}>
+        <div className={style.head}>
+            <h2>버튼 사용 현황</h2>
+            <TimeSelect />
+        </div>
+
+        <div className={style.table_head}>
+            <div>이름</div>
+            <div>접근</div>
+            <div>횟수</div>
+        </div>
         
         <section className={style.list}>
             
+            <div className={style.box}>
+                <div>testBtn</div>
+                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
+                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
+            </div>
+        
         </section>
     </section>;
 }
 
 function SkillCountBox() {
-    return <section className={style.box}>
-        <h2>스킬 사용 현황</h2>
+    return <section className={[style.box, style.skill_count].join(' ')}>
+        <div className={style.head}>
+            <h2>스킬 사용 현황</h2>
+            <TimeSelect />
+        </div>
+
+        <div className={style.table_head}>
+            <div>이름</div>
+            <div>접근</div>
+            <div>횟수</div>
+        </div>
     
         <section className={style.list}>
+            
+            <div className={style.box}>
+                <div>testBtn</div>
+                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
+                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
+            </div>
+            <div className={style.box}>
+                <div>testBtn</div>
+                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
+                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
+            </div>
 
         </section>
     </section>;
