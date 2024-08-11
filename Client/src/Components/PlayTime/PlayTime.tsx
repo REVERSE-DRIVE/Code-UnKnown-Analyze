@@ -56,6 +56,13 @@ function GamePlayChart({ setPlaytime }: { setPlaytime: React.Dispatch<React.SetS
             }
           }
         },
+        scales: {
+            y: {
+              ticks: {
+                callback: (_label: any) => secondsToString(_label)
+              }
+            }
+        },
         responsive: true,
         maintainAspectRatio: false,
     }
@@ -126,6 +133,9 @@ function SceneTimeChart() {
           tooltip: {
             enabled: true,
             intersect: false,
+            callbacks: {
+                label: (tooltipItem: any) => `${tooltipItem.dataset.label}: ${secondsToString(Number(tooltipItem.formattedValue.replaceAll(',', '')))}`
+            }
           }
         },
         responsive: true,
@@ -135,7 +145,10 @@ function SceneTimeChart() {
               stacked: true,
             },
             y: {
-              stacked: true
+              stacked: true,
+              ticks: {
+                callback: (_label: any) => secondsToString(_label)
+              }
             }
         }
     }
