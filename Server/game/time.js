@@ -35,3 +35,35 @@ async function getDuration(conn, uuid, token) {
     conn.query("DELETE FROM time_token WHERE token = ?", [ token ]);
     return Math.floor((new Date() - new Date(row.create)) / 1000); // 밀리초 -> 초
 }
+
+app.post("/game/time/ingame", async function(req, res) {
+    const { token } = req.body;
+
+    if (typeof token !== "string") {
+        return res.sendStatus(400);
+    }
+    
+    const connection = await sql.getConnection();
+    await connection.beginTransaction(); // 트랜잭션 시작
+    
+    // 걸린시간 불러오기
+    const duration = await getDuration(connection, req.uuid, token);
+    if (duration === false) {
+        connection.release();
+        res.status(400).send("not found token");
+        return;
+    }
+
+    try {
+        await connection.query("INSERT INTO time_game VALUES(?, ?, NOW())", [ req.uuid, duration ]);
+        await connection.commit();
+
+        res.send("ok!");
+    } catch { // 실패
+        res.sendStatus(500);
+        
+        await connection.rollback();
+    }
+    
+    connection.release();
+});
