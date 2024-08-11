@@ -4,7 +4,7 @@ import { testValues } from '../User/User';
 import { TimeSelect } from '../Recycle/TimeSelect';
 import { useEffect, useState } from 'react';
 import { request } from '../Util/request';
-import { secondsToString } from '../Util/misc';
+import { getRandomInt, secondsToString, stringToHash } from '../Util/misc';
 
 export function PlayTime() {
     const [ playtime, setPlaytime ] = useState<number>(0);
@@ -101,26 +101,21 @@ function GamePlayChart({ setPlaytime }: { setPlaytime: React.Dispatch<React.SetS
     </section>;
 }
 
+interface sceneChartAPI {
+    result: {
+        scene: string,
+        time: number,
+        created: string
+    }[],
+    server_time: string
+}
 function SceneTimeChart() {
+    const [label, setLabel] = useState<string[]>([]);
+    const [dataset, setDataset] = useState<{ label: string, data: number[], backgroundColor: string }[]>([]);
+
     const data = {
-        labels: testValues.map(v => `${v[0]}일`),
-        datasets: [
-            {
-                label: "domiMAP",
-                data: testValues.map(v => v[1]),
-                backgroundColor: "rgba(54, 162, 235, 0.6)",
-            },
-            {
-                label: "Lobby",
-                data: testValues.map(v => v[2]),
-                backgroundColor: "rgba(154, 23, 235, 0.6)",
-            },
-            {
-                label: "test",
-                data: testValues.map(v => (v[1] / v[2]) * 10),
-                backgroundColor: "rgba(154, 123, 20, 0.6)",
-            }
-        ],
+        labels: label,
+        datasets: dataset,
     }
 
     const options = {
@@ -144,6 +139,54 @@ function SceneTimeChart() {
             }
         }
     }
+
+    const loadData = async function() {
+        const { code, data: _data } = await request('time/scene_chart');
+        const data = _data as sceneChartAPI;
+
+        if (code !== 200) return;
+
+        const serverTime = new Date(data.server_time);
+        const result: { [key: string]: { data: number[], backgroundColor: string } } = {};
+
+        data.result.forEach(v => {
+            const diffDay = new Date(serverTime.getTime() - new Date(v.created).getTime()).getDate() - 1;
+            
+            let yData = result[v.scene];
+            if (yData === undefined) {
+                const hash = String(stringToHash(v.scene));
+                result[v.scene] = yData = {
+                    data: [],
+                    // backgroundColor: `rgba(${hash.slice(0, 3) || 0}, ${hash.slice(3, 6) || 0}, ${hash.slice(6, 9) || 0}, 0.7)`
+                    backgroundColor: `rgba(${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, 0.7)`
+                }
+            }
+
+            yData.data[diffDay] = v.time;
+        });
+
+        const labels: string[] = [];
+        for (let i = 30; i >= 0; i--) {
+            const time = new Date(data.server_time);
+            time.setDate(time.getDate() - i);
+            
+            labels.push(`${time.getMonth() + 1}월 ${time.getDate()}일`);
+        }
+
+        setLabel(labels);
+        setDataset(Object.keys(result).map(scene => {
+            const value = result[scene];
+
+            return {
+                label: scene,
+                ...value
+            };
+        }));
+    }
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return <section className={style.scenetime_chart}>
         <h2>Scene 시간</h2>
