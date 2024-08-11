@@ -3,7 +3,7 @@ const dateUtil = require("../lib/date");
 
 app.get("/admin/exception", async function(req, res) {
     const timeId = Number(req.query.time);
-    const YYMMDD = getYYMMDD_time(timeId);
+    const YYMMDD = dateUtil.getYYMMDD_time(timeId);
 
     if (YYMMDD === null) {
         res.sendStatus(400);
@@ -19,7 +19,7 @@ app.get("/admin/exception/:type", async function(req, res) {
     const type = req.params.type;
 
     const timeId = Number(req.query.time);
-    const YYMMDD = getYYMMDD_time(timeId);
+    const YYMMDD = dateUtil.getYYMMDD_time(timeId);
 
     if (YYMMDD === null) {
         res.sendStatus(400);
@@ -34,7 +34,7 @@ app.get("/admin/exception/:type/:func/messages", async function(req, res) {
     const { type, func } = req.params;
 
     const timeId = Number(req.query.time);
-    const YYMMDD = getYYMMDD_time(timeId);
+    const YYMMDD = dateUtil.getYYMMDD_time(timeId);
 
     if (YYMMDD === null) {
         res.sendStatus(400);
@@ -48,33 +48,8 @@ app.get("/admin/exception/:type/:func/messages", async function(req, res) {
 app.get("/admin/exception/:type/chart", async function(req, res) {
     const type = req.params.type;
 
-    const YYMMDD = getYYMMDD_time(2); // 강제로 30일 전
+    const YYMMDD = dateUtil.getYYMMDD_time(2); // 강제로 30일 전
     
     const [rows] = await sql.query("SELECT time, sum(count) as count  FROM exceptions WHERE time >= ? AND type = ? GROUP BY time;", [ YYMMDD, type ]);
     res.send(rows);
 });
-
-function getYYMMDD_time(id) {
-    let lastTime;
-    switch (id) {
-        case 0:
-            lastTime = 1;
-            break;
-        case 1:
-            lastTime = 7;
-            break;
-        case 2:
-            lastTime = 30;
-            break;
-    
-        default:
-            return null;
-    }
-
-    const date = new Date();
-    date.setDate(date.getDate() - lastTime);
-        
-    const YYMMDD = dateUtil.getYYMMDD(date);
-
-    return YYMMDD;
-}
