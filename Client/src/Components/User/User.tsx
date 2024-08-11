@@ -67,7 +67,6 @@ export default function User() {
 
         if (code !== 200) return;
 
-        console.log(data);
         setKeepuser({
             total: data.total_users,
             inactive_total: data.inactive_users

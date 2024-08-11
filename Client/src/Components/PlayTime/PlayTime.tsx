@@ -2,25 +2,41 @@ import { Bar } from 'react-chartjs-2';
 import style from './playtime.module.css';
 import { testValues } from '../User/User';
 import { TimeSelect } from '../Recycle/TimeSelect';
+import { useEffect, useState } from 'react';
+import { request } from '../Util/request';
+import { secondsToString } from '../Util/misc';
 
 export function PlayTime() {
+    const [ playtime, setPlaytime ] = useState<number>(0);
+
     return <main className={style.main}>
         <h1 className={style.title}>플레이 타임</h1>
-        <div className={style.sub_title}>오늘 평균 플레이 타임은 <span>1분 20초</span> 입니다.</div>
+        <div className={style.sub_title}>오늘 평균 플레이 타임은 <span>{secondsToString(playtime)}</span> 입니다.</div>
         
-        <GamePlayChart />
+        <GamePlayChart setPlaytime={setPlaytime} />
         <SceneTimeChart />
         <SceneTimeList />
     </main>;
 }
 
-function GamePlayChart() {
+type gameChartData = { name: string, value: number };
+interface gameChartAPI {
+    result: {
+        time: number, // 서버에서는 string으로 주기 때문에 변환 해야함
+        created: string
+    }[],
+    server_time: string
+}
+
+function GamePlayChart({ setPlaytime }: { setPlaytime: React.Dispatch<React.SetStateAction<number>> }) {
+    const [list, setList] = useState<gameChartData[]>([]);
+
     const data = {
-        labels: ["8월 7일", "8월 8일"],
+        labels: list.map(v => v.name),
         datasets: [
             {
                 // label: "최근 접속",
-                data: [5, 10],
+                data: list.map(v => v.value),
                 // borderColor: "rgb(255, 99, 132)",
                 backgroundColor: "rgba(54, 162, 235, 0.6)",
             }
@@ -35,11 +51,50 @@ function GamePlayChart() {
           tooltip: {
             enabled: true,
             intersect: false,
+            callbacks: {
+                label: (tooltipItem: any) => secondsToString(Number(tooltipItem.formattedValue.replaceAll(',', '')))
+            }
           }
         },
         responsive: true,
         maintainAspectRatio: false,
     }
+
+    const loadData = async function() {
+        const { code, data: _data } = await request('time/ingame_chart');
+        const data = _data as gameChartAPI;
+        
+        if (code !== 200) return;
+
+        const result_index: { [key: string]: number } = {};
+        const result: gameChartData[] = [];
+
+        data.result.forEach(v => {
+            const time = new Date(v.created);
+            result_index[`${time.getMonth()}${time.getDate()}`] = Number(v.time);
+        });
+
+        for (let i = 30; i >= 0; i--) {
+            const time = new Date(data.server_time);
+            time.setDate(time.getDate() - i);
+            
+            const value = result_index[`${time.getMonth()}${time.getDate()}`] || 0;
+            
+            result.push({
+                name: `${time.getMonth() + 1}월 ${time.getDate()}일`,
+                value: value
+            });
+
+            if (i === 0)// 오늘
+                setPlaytime(value);
+        }
+
+        setList(result);
+    }
+
+    useEffect(() => {
+        loadData();
+    }, []);
 
     return <section className={style.gameplay_box}>
         <Bar options={options} data={data} />
