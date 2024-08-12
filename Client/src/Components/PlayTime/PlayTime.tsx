@@ -1,7 +1,7 @@
 import { Bar } from 'react-chartjs-2';
 import style from './playtime.module.css';
 import { testValues } from '../User/User';
-import { TimeSelect } from '../Recycle/TimeSelect';
+import { TimeOption, TimeSelect } from '../Recycle/TimeSelect';
 import { useEffect, useState } from 'react';
 import { request } from '../Util/request';
 import { getRandomInt, secondsToString, stringToHash } from '../Util/misc';
@@ -210,11 +210,38 @@ function SceneTimeChart() {
     </section>
 }
 
+interface sceneData {
+    scene: string,
+    time: number
+}
 function SceneTimeList() {
+    const [time, setTime] = useState<TimeOption>(0);
+    const [list, setList] = useState<sceneData[]>([]);
+
+    const loadData = async function() {
+        const { code, data: _data } = await request(`time/scene?time=${time}`);
+        const data = _data as sceneData[];
+
+        if (code !== 200) return;
+        
+        const result = data.map(v => ({ scene: v.scene, time: Number(v.time) }));
+        result.sort(function(a, b) {
+            if (a.time < b.time) return 1;
+            else if (a.time > b.time) return -1;
+            else return 0;
+        });
+
+        setList(result);
+    }
+
+    useEffect(() => {
+        loadData();
+    }, [ time ]);
+
     return <section className={style.scenetime_list}>
         <div className={style.header}>
             <h2>Scene 시간 목록</h2>
-            <TimeSelect />
+            <TimeSelect setState={setTime} />
         </div>
 
         <div className={style.table_head}>
@@ -222,15 +249,13 @@ function SceneTimeList() {
             <div>평균 플레이 시간</div>
         </div>
 
-        <SceneTime />
-        <SceneTime />
-        <SceneTime />
+        {list.map(v => <SceneTime key={v.scene} data={v} />)}
     </section>;
 }
 
-function SceneTime() {
+function SceneTime({ data }: { data: sceneData }) {
     return <div className={style.box}>
-        <div>domiMAP</div>
-        <div>10시 10분 10초</div>
+        <div>{data.scene}</div>
+        <div>{secondsToString(data.time)}</div>
     </div>;
 }
