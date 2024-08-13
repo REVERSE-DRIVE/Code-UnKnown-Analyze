@@ -163,7 +163,7 @@ function SceneTimeChart() {
         const result: { [key: string]: { data: number[], backgroundColor: string } } = {};
 
         data.result.forEach(v => {
-            const diffDay = new Date(serverTime.getTime() - new Date(v.created).getTime()).getDate() - 1;
+            const diffDay = 30 - (new Date(serverTime.getTime() - new Date(v.created).getTime()).getDate() - 1);
             
             let yData = result[v.scene];
             if (yData === undefined) {
