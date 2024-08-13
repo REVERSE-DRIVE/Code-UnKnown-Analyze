@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 CREATE TABLE IF NOT EXISTS `exceptions` (
 	`type` VARCHAR(50) NOT NULL,
 	`func` VARCHAR(50) NOT NULL,
-	`message` TEXT NOT NULL,
+	`message` MEDIUMTEXT NOT NULL,
 	`count` INT(11) NOT NULL,
 	`time` DATE NOT NULL,
 	INDEX `인덱스 1` (`type`)

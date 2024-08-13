@@ -1,10 +1,10 @@
 import { Bar } from 'react-chartjs-2';
 import style from './playtime.module.css';
-import { testValues } from '../User/User';
+// import { testValues } from '../User/User';
 import { TimeOption, TimeSelect } from '../Recycle/TimeSelect';
 import { useEffect, useState } from 'react';
 import { request } from '../Util/request';
-import { getRandomInt, secondsToString, stringToHash } from '../Util/misc';
+import { getRandomInt, secondsToString } from '../Util/misc';
 
 export function PlayTime() {
     const [ playtime, setPlaytime ] = useState<number>(0);
@@ -167,7 +167,7 @@ function SceneTimeChart() {
             
             let yData = result[v.scene];
             if (yData === undefined) {
-                const hash = String(stringToHash(v.scene));
+                // const hash = String(stringToHash(v.scene));
                 result[v.scene] = yData = {
                     data: [],
                     // backgroundColor: `rgba(${hash.slice(0, 3) || 0}, ${hash.slice(3, 6) || 0}, ${hash.slice(6, 9) || 0}, 0.7)`

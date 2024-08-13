@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { ProgressBar } from '../Exception/Exception';
-import { TimeSelect } from '../Recycle/TimeSelect';
+import { TimeOption, TimeSelect } from '../Recycle/TimeSelect';
 import style from './interaction.module.css';
 
 export default function InteractionPage() {
@@ -24,10 +25,12 @@ export default function InteractionPage() {
 }
 
 function ButtonCountBox() {
+    const [_, setDate] = useState<TimeOption>(TimeOption.Last24);
+
     return <section className={[style.box, style.btn_count].join(' ')}>
         <div className={style.head}>
             <h2>버튼 사용 현황</h2>
-            <TimeSelect />
+            <TimeSelect setState={setDate} />
         </div>
 
         <div className={style.table_head}>
@@ -49,10 +52,11 @@ function ButtonCountBox() {
 }
 
 function SkillCountBox() {
+    const [_, setDate] = useState<TimeOption>(TimeOption.Last24);
     return <section className={[style.box, style.skill_count].join(' ')}>
         <div className={style.head}>
             <h2>스킬 사용 현황</h2>
-            <TimeSelect />
+            <TimeSelect setState={setDate} />
         </div>
 
         <div className={style.table_head}>
@@ -79,10 +83,11 @@ function SkillCountBox() {
 }
 
 function CardCountBox() {
+    const [_, setDate] = useState<TimeOption>(TimeOption.Last24);
     return <section className={[style.box, style.card_count].join(' ')}>
         <div className={style.head}>
             <h2>카드 사용 현황</h2>
-            <TimeSelect />
+            <TimeSelect setState={setDate} />
         </div>
 
 
