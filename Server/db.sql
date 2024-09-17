@@ -84,6 +84,19 @@ CREATE TABLE IF NOT EXISTS `time_game` (
 )
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `interactions` (
+	`UUID` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`id` VARCHAR(50) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`type` ENUM('BUTTON','SKILL') NOT NULL COLLATE 'utf8mb4_general_ci',
+	`count` INT(11) NOT NULL DEFAULT '0',
+	`created` DATETIME NOT NULL,
+	INDEX `FK_interactions_users` (`UUID`) USING BTREE,
+	CONSTRAINT `FK_interactions_users` FOREIGN KEY (`UUID`) REFERENCES `code_analyze`.`users` (`UUID`) ON UPDATE CASCADE ON DELETE CASCADE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 -- 내보낼 데이터가 선택되어 있지 않습니다.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
