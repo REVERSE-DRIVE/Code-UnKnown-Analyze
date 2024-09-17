@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProgressBar } from '../Exception/Exception';
 import { TimeOption, TimeSelect } from '../Recycle/TimeSelect';
 import style from './interaction.module.css';
+import { request } from '../Util/request';
+import { numberComma } from '../Util/misc';
 
 export default function InteractionPage() {
     return <main className={style.main}>
         <section className={style.row}>
-            <ButtonCountBox />
+            <CountSection id='button' title='버튼' />
             
             <div className={style.line}></div>
             
-            <SkillCountBox />
+            <CountSection id='skill' title='스킬' />
         </section>
 
         {/* 카드 업글 얼마나 골랐는지 */}
@@ -24,38 +26,56 @@ export default function InteractionPage() {
     </main>;
 }
 
-function ButtonCountBox() {
-    const [_, setDate] = useState<TimeOption>(TimeOption.Last24);
-
-    return <section className={[style.box, style.btn_count].join(' ')}>
-        <div className={style.head}>
-            <h2>버튼 사용 현황</h2>
-            <TimeSelect setState={setDate} />
-        </div>
-
-        <div className={style.table_head}>
-            <div>이름</div>
-            <div>접근</div>
-            <div>횟수</div>
-        </div>
-        
-        <section className={style.list}>
-            
-            <div className={style.box}>
-                <div>testBtn</div>
-                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
-                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
-            </div>
-        
-        </section>
-    </section>;
+interface InteractionItem {
+    id: string,
+    count: number,
+    access: number
+}
+interface InteractionItemBox extends InteractionItem {
+    count_precent: number
 }
 
-function SkillCountBox() {
-    const [_, setDate] = useState<TimeOption>(TimeOption.Last24);
+type InteractionApi = {
+    total: number,
+    data: InteractionItem[]
+}
+
+function CountSection({ id, title }: { id: string, title: string }) {
+    const [date, setDate] = useState<TimeOption>(TimeOption.Last24);
+    const [list, setList] = useState<InteractionItemBox[]>([]);
+    
+    useEffect(() => {
+        let control = true;
+
+        const getData = async function() {
+            const { code, data: _data } = await request(`interaction/${id}?time=${date}`);
+            if (!control || code !== 200) return;
+
+            const data = _data as InteractionApi;
+            const totalCount = data.data.reduce((prev, current) => prev + Number(current.count), 0);
+            const result: InteractionItemBox[] = [];
+
+            data.data.forEach(v => {
+                result.push({
+                    id: v.id,
+                    count: Number(v.count),
+                    access: (Number(v.access) / data.total) * 100,
+                    count_precent: (Number(v.count) / totalCount) * 100
+                });
+            });
+
+            result.sort((a, b) => a.count + b.count);
+
+            setList(result);
+        }
+        getData();
+
+        return () => { control = false };
+    }, [date]);
+
     return <section className={[style.box, style.skill_count].join(' ')}>
         <div className={style.head}>
-            <h2>스킬 사용 현황</h2>
+            <h2>{title} 사용 현황</h2>
             <TimeSelect setState={setDate} />
         </div>
 
@@ -67,17 +87,11 @@ function SkillCountBox() {
     
         <section className={style.list}>
             
-            <div className={style.box}>
-                <div>testBtn</div>
-                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
-                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
-            </div>
-            <div className={style.box}>
-                <div>testBtn</div>
-                <div><span>60%</span><ProgressBar value={60} className={[style.bar]} /></div>
-                <div><span>1,234</span><ProgressBar value={55} className={[style.bar]} /></div>
-            </div>
-
+            {list.map(v => <div key={v.id} className={style.box}>
+                <div>{v.id}</div>
+                <div><span>{v.access}%</span><ProgressBar value={v.access} className={[style.bar]} /></div>
+                <div><span>{numberComma(v.count)}</span><ProgressBar value={v.count_precent} className={[style.bar]} /></div>
+            </div>)}
         </section>
     </section>;
 }
