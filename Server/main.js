@@ -33,5 +33,6 @@ require("./game/exception.js");
 require("./admin/time.js");
 require("./game/time.js");
 require("./admin/interaction.js");
+require("./game/interaction.js");
 
 app.listen(config.port, () => console.log(`[API] server listen ${config.port}`));

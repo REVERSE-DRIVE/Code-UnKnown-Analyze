@@ -3,7 +3,7 @@ const dateUtil = require("../lib/date");
 
 const buttonList = require("../buttons.json");
 
-const ID_LIST = {
+const ID_LIST = exports.ID_LIST = {
     button: buttonList,
     skill: []
 }
